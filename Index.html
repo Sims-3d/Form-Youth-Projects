@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Investir dans un projet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4fdfc;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    form {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    label {
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #fileInfo {
+      font-size: 14px;
+      color: #333;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<form id="investmentForm">
+  <h2>Investir dans un projet</h2>
+
+  <label for="investorName">Nom complet</label>
+  <input type="text" id="investorName" placeholder="Jean Dupont" required>
+
+  <label for="email">Adresse Email</label>
+  <input type="email" id="email" placeholder="exemple@mail.com" required>
+
+  <label for="phone">Numéro de téléphone</label>
+  <input type="tel" id="phone" placeholder="+33 6 00 00 00 00" required>
+
+  <label for="projectName">Projet à financer</label>
+  <select id="projectName" required>
+    <option value="">Sélectionner un projet</option>
+    <!-- Options dynamiques injectées depuis Apps Script -->
+  </select>
+
+  <label for="amount">Montant investi (€)</label>
+  <input type="number" id="amount" placeholder="1000" min="1" required>
+
+  <label for="identityFile">Pièce d'identité</label>
+  <input type="file" id="identityFile" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" required>
+  <div id="fileInfo">Veuillez insérer une pièce d'identité (image ou document PDF/Word).</div>
+
+  <button type="submit">Soumettre l'investissement</button>
+  <p id="message"></p>
+</form>
+
+<script>
+  // Charger les projets depuis Apps Script (à personnaliser avec ton URL)
+  fetch("https://script.google.com/macros/s/AKfycbxpgx0uWy18B6E3AigcGtf_oq6-7Lqbthu-XZBs69mD6bjoP7NKeCj5jI560g0FZZHo/exec")
+    .then(res => res.json())
+    .then(data => {
+      const select = document.getElementById("projectName");
+      data.projects.forEach(p => {
+        const option = document.createElement("option");
+        option.value = p;
+        option.textContent = p;
+        select.appendChild(option);
+      });
+    });
+
+  document.getElementById('investmentForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', document.getElementById('investorName').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('phone', document.getElementById('phone').value);
+    formData.append('project', document.getElementById('projectName').value);
+    formData.append('amount', document.getElementById('amount').value);
+    formData.append('file', document.getElementById('identityFile').files[0]);
+
+    const response = await fetch("TON_URL_APP_SCRIPT_FORMULAIRE", {
+      method: "POST",
+      body: formData
+    });
+
+    document.getElementById('message').textContent = "Merci ! Votre demande a été soumise.";
+    document.getElementById('investmentForm').reset();
+  });
+</script>
+
+</body>
+</html>
