@@ -87,7 +87,7 @@
 
 <script>
   // Charger les projets depuis Apps Script (à personnaliser avec ton URL)
-  fetch("https://script.google.com/macros/s/AKfycbyvoovXbNhi0q7ujrk901Z_UqHjE9Yx3v0B2nsWg9TzJOKwcdJ61bLvANOPx6dV6YqC/exec")
+  fetch("https://script.google.com/macros/s/AKfycbz0hatL8QWFA1XqZv1vDd8LLEWwwT_SAzL-zwGfr0wsDRNIUut-wgyF3z-sTMv41CjW/exec")
     .then(res => res.json())
     .then(data => {
       const select = document.getElementById("projectName");
@@ -110,7 +110,7 @@
     formData.append('amount', document.getElementById('amount').value);
     formData.append('file', document.getElementById('identityFile').files[0]);
 
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyvoovXbNhi0q7ujrk901Z_UqHjE9Yx3v0B2nsWg9TzJOKwcdJ61bLvANOPx6dV6YqC/exec", {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbz0hatL8QWFA1XqZv1vDd8LLEWwwT_SAzL-zwGfr0wsDRNIUut-wgyF3z-sTMv41CjW/exec", {
       method: "POST",
       body: formData
     });
